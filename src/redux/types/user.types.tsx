@@ -1,9 +1,12 @@
+import {FETCH_FAILURE, FETCH_REQUEST} from '../actions/user.actions';
+
 export interface UserInterface {
   id: string;
+  title: string;
   firstName: string;
   lastName: string;
   email: string;
-  image: string;
+  picture: string;
 }
 
 export type DeactivateUserIdsType = string[];
@@ -33,8 +36,18 @@ interface UpdateUserActivationStatus {
   payload: {userId: string; status: boolean};
 }
 
+interface FetchUserFail {
+  type: typeof FETCH_FAILURE;
+  payload: any;
+}
+interface FetchUserRequest {
+  type: typeof FETCH_REQUEST;
+}
+
 export type UserActionTypes =
   | FetchUserAction
   | UpdateUserAction
   | UpdateUserListAction
-  | UpdateUserActivationStatus;
+  | UpdateUserActivationStatus
+  | FetchUserFail
+  | FetchUserRequest;

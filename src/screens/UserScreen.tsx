@@ -30,7 +30,7 @@ const UserItem = ({
     <FastImage
       style={{width: 50, height: 50, borderRadius: 25, marginRight: 15}}
       source={{
-        uri: user.image,
+        uri: user.picture,
         priority: FastImage.priority.normal,
       }}
       resizeMode={FastImage.resizeMode.contain}
@@ -58,14 +58,17 @@ const UserScreen: React.FC<Props> = () => {
     storeUser,
     storeDeactivateUserIds,
     storeIsAllUserLoaded,
+    storeFetchStatus,
   }: {
     storeUser: UserInterface[];
     storeDeactivateUserIds: DeactivateUserIdsType;
     storeIsAllUserLoaded: boolean;
+    storeFetchStatus: boolean;
   } = useSelector((state: RootState) => ({
     storeUser: state.users.users,
     storeDeactivateUserIds: state.users.deactivateUserIds,
     storeIsAllUserLoaded: state.users.isAllUserLoaded,
+    storeFetchStatus: state.users.fetchStatus,
   }));
 
   const [refreshing, setRefreshing] = useState(true);
@@ -79,6 +82,12 @@ const UserScreen: React.FC<Props> = () => {
     setRefreshing(false);
     setLoadingMore(false);
   }, [storeUser]);
+
+  useEffect(() => {
+    if (refreshing && !storeFetchStatus) {
+      setRefreshing(false);
+    }
+  }, [storeFetchStatus]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onRefresh = () => {
     setLoadingMore(false);

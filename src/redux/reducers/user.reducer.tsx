@@ -9,16 +9,19 @@ import {
   UserInterface,
 } from '../types/user.types';
 import _ from 'lodash';
+import {FETCH_FAILURE, FETCH_REQUEST} from '../actions/user.actions';
 // reducer
 
 const initialState: {
   users: UserInterface[];
   deactivateUserIds: DeactivateUserIdsType;
   isAllUserLoaded: boolean;
+  fetchStatus: boolean;
 } = {
   users: [],
   deactivateUserIds: [],
   isAllUserLoaded: false,
+  fetchStatus: true,
 };
 
 function userReducer(state = initialState, action: UserActionTypes) {
@@ -76,6 +79,17 @@ function userReducer(state = initialState, action: UserActionTypes) {
         ...state,
         deactivateUserIds: newDeactivateUserIds,
       };
+    case FETCH_REQUEST:
+      return {
+        ...state,
+        fetchStatus: true,
+      };
+    case FETCH_FAILURE:
+      return {
+        ...state,
+        fetchStatus: false,
+      };
+
     default:
       return state;
   }
